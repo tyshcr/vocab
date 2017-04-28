@@ -29,12 +29,18 @@ class vocabQuiz {
     
     func menu() {
         
-        print("1) Create new file")
-        print("2) Run Quiz")
+        print("# MAIN MENU #")
+        print("[1] Create new file")
+        print("[2] Run Quiz")
         
         let selection = readLine()!
         
-        switch Int(selection)! {
+        guard let intSelection = Int(selection) else {
+            menu()
+            return
+        }
+        
+        switch intSelection {
         case 1:
             createFile()
         case 2:
@@ -45,6 +51,7 @@ class vocabQuiz {
     }
 
     func createFile() {
+        print("# CREATE NEW VOCAB LIST #")
         print("Enter the name for this vocab list")
         let filename = readLine()!
         
@@ -55,6 +62,7 @@ class vocabQuiz {
         var output: String = ""
         
         while spanish != "exit" {
+            print("# CREATE WORD #")
             print("Enter Spanish Word:", terminator: "")
             spanish = readLine()!
             if spanish != "exit" {
@@ -74,7 +82,7 @@ class vocabQuiz {
     }
 
     func runQuiz() {
-        print("Running quiz...")
+        
         // get list of files
         // let user choose a file
         // choose randomly from words in file
@@ -83,7 +91,13 @@ class vocabQuiz {
             // Get the directory contents urls (including subfolders urls)
 
             let directoryContents = try FileManager.default.contentsOfDirectory(atPath: directory())
-            print(directoryContents)
+
+            print("# CHOOSE QUIZ FILE #")
+            var i = 1
+            for file in directoryContents {
+                print("[\(i)] \(file)")
+                i += 1
+            }
             
         } catch let error as NSError {
             print(error.localizedDescription)
