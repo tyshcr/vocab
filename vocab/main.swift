@@ -4,17 +4,20 @@ import Foundation
 
 class vocabQuiz {
     
+    init() {
+        menu()
+    }
+    
     func menu() {
         print("1) Create new file")
         print("2) Run Quiz")
         
         let selection = readLine()!
-        clearScreen()
         
         if selection == "1" {
-            createFile()
+            self.createFile()
         } else {
-            runQuiz()
+            self.runQuiz()
         }
     }
 
@@ -26,7 +29,7 @@ class vocabQuiz {
        
         var spanish: String = ""
         var english: String = ""
-        var dictionary: [String:String] = [:]
+        var output: String = ""
         
         while spanish != "exit" {
             print("Enter Spanish Word:", terminator: "")
@@ -34,18 +37,12 @@ class vocabQuiz {
             if spanish != "exit" {
                 print("Enter English Word:", terminator: "")
                 english = readLine()!
-                dictionary[spanish] = english
+                output += spanish + "," + english + "\n"
             }
-            clearScreen()
-        }
-        
-        var string: String = ""
-        for (spn, eng) in dictionary {
-           string += spn + "," + eng + "\n"
         }
         
         do {
-            try string.write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
+            try output.write(toFile: path, atomically: true, encoding: String.Encoding.utf8)
         } catch {
             print("err")
         }
@@ -59,13 +56,14 @@ class vocabQuiz {
         //    print(text2!)
     }
 
-    func clearScreen() {
+    func clearScreen(completion:@escaping (Bool) -> () ) {
         let clearScreen = Process()
         clearScreen.launchPath = "/usr/bin/clear"
         clearScreen.arguments = []
+        clearScreen.terminationHandler = { task in completion(true) }
         clearScreen.launch()
     }
 }
 
-let quiz = vocabQuiz()
-quiz.menu()
+let _ = vocabQuiz()
+//quiz.menu()
