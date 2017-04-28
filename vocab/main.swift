@@ -5,10 +5,30 @@ import Foundation
 class vocabQuiz {
     
     init() {
+        createDirectory()
         menu()
     }
     
+    func createDirectory() {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let dataPath = documentsDirectory.appendingPathComponent("vocab")
+        
+        do {
+            try FileManager.default.createDirectory(atPath: dataPath.path, withIntermediateDirectories: true, attributes: nil)
+        } catch let error as NSError {
+            print("Error creating directory: \(error.localizedDescription)")
+        }
+    }
+    
+    func directory() -> String {
+        let dirs: [String] = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true)
+        
+        let dir = dirs[0] + "/vocab" //documents directory
+        return dir
+    }
+    
     func menu() {
+        
         print("1) Create new file")
         print("2) Run Quiz")
         
@@ -28,10 +48,7 @@ class vocabQuiz {
         print("Enter the name for this vocab list")
         let filename = readLine()!
         
-        let dirs: [String] = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true)
-
-        let dir = dirs[0] //documents directory
-        let path = dir + "/" + filename + ".txt"
+        let path = directory() + "/" + filename + ".txt"
        
         var spanish: String = ""
         var english: String = ""
@@ -62,6 +79,16 @@ class vocabQuiz {
         // let user choose a file
         // choose randomly from words in file
         
+        do {
+            // Get the directory contents urls (including subfolders urls)
+
+            let directoryContents = try FileManager.default.contentsOfDirectory(atPath: directory())
+            print(directoryContents)
+            
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
         //reading
         //    let text2 = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil)
         //    print(text2!)
@@ -77,4 +104,3 @@ class vocabQuiz {
 }
 
 let _ = vocabQuiz()
-//quiz.menu()
