@@ -14,18 +14,24 @@ class vocabQuiz {
         
         let selection = readLine()!
         
-        if selection == "1" {
-            self.createFile()
-        } else {
-            self.runQuiz()
+        switch Int(selection)! {
+        case 1:
+            createFile()
+        case 2:
+            runQuiz()
+        default:
+            menu()
         }
     }
 
     func createFile() {
+        print("Enter the name for this vocab list")
+        let filename = readLine()!
+        
         let dirs: [String] = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.allDomainsMask, true)
 
         let dir = dirs[0] //documents directory
-        let path = dir + "/vocab.txt"
+        let path = dir + "/" + filename + ".txt"
        
         var spanish: String = ""
         var english: String = ""
@@ -46,11 +52,16 @@ class vocabQuiz {
         } catch {
             print("err")
         }
-
+        
+        menu()
     }
 
     func runQuiz() {
         print("Running quiz...")
+        // get list of files
+        // let user choose a file
+        // choose randomly from words in file
+        
         //reading
         //    let text2 = String(contentsOfFile: path, encoding: NSUTF8StringEncoding, error: nil)
         //    print(text2!)
